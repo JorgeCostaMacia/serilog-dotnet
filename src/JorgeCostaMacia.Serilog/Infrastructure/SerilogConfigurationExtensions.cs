@@ -10,7 +10,7 @@ namespace JorgeCostaMacia.Serilog.Infrastructure;
 /// <remarks>
 /// Kept as a <see cref="LoggerConfiguration"/> extension (not a hidden <c>Add…</c> facade) so the host's
 /// own <c>AddSerilog</c> call stays visible in its <c>Program</c> while the baseline lives here — the same
-/// shape as http-net's options extensions.
+/// shape as http-dotnet's options extensions.
 /// <para>
 /// The baseline owns the enrichment, so <b>do not repeat it in configuration</b>: an app's <c>Serilog</c>
 /// section needs only <c>Using</c> for its sinks, <c>MinimumLevel</c>, <c>Override</c> and <c>WriteTo</c>.
