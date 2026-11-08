@@ -21,15 +21,15 @@ The baseline is an **extension on the type Serilog already hands the host** — 
 
 An `AddSerilogContext` facade that replaced `AddSerilog` was removed in 7.0.0 for breaking it: no host had adopted it, each had hand-rolled the enrichers instead. **Don't add another.** A policy belongs in an extension when Serilog cannot read it from configuration — the entry assembly's `Version` and `Application`, and the enrichers every app shares; when it can — sinks, levels and overrides — leave it in `appsettings`, where it can differ per app and per environment.
 
-## Dependencies
+## Dependencies on the family
 
 Nothing here depends on another `JorgeCostaMacia.*` package, and nothing in the family needs this one: `Quartz.Serilog` (quartz-dotnet) takes the third-party `Serilog`, not this baseline. That is what lets this repo release on its own. Keep it that way.
 
 ## Dependencies — Central Package Management
 
-Third-party package versions are centralized in **`Directory.Packages.props`** (repo root, `ManagePackageVersionsCentrally=true`): add or bump them **there** as `<PackageVersion>`, and reference packages in csproj **without** a `Version`. (Inter-package deps are `ProjectReference`, not packages — see above — so CPM doesn't manage them.)
+Third-party package versions are centralized in **`Directory.Packages.props`** (repo root, `ManagePackageVersionsCentrally=true`): add or bump them **there** as `<PackageVersion>`, and reference packages in csproj **without** a `Version`.
 
-**The strict gates are on**: `TreatWarningsAsErrors` and the NuGet vulnerability audit on every restore (direct and transitive, every severity), so any warning — an advisory included — fails the build. The fix is a version bump or a transitive override in CPM, never `NoWarn`. The root `nuget.config` clears every inherited source and keeps nuget.org alone: these packages consume nothing else, and an inherited second source would raise `NU1507`. It is **deny-read** for agents — hand changes to it to the user.
+**The strict gates are on**: `TreatWarningsAsErrors` and the NuGet vulnerability audit on every restore (direct and transitive, every severity), so any warning — an advisory included — fails the build. The fix is a version bump or a transitive override in CPM, never `NoWarn`. The root `nuget.config` clears every inherited source and keeps nuget.org alone: this package consumes nothing else, and an inherited second source would raise `NU1507`. It is **deny-read** for agents — hand changes to it to the user.
 
 ## CI / publishing
 
