@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/JorgeCostaMacia.Serilog/JorgeCostaMacia.Serilog.csproj" />
+  <Project Path="test/JorgeCostaMacia.Serilog.Tests/JorgeCostaMacia.Serilog.Tests.csproj" />
+</Solution>
