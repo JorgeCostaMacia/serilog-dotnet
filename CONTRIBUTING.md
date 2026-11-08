@@ -76,7 +76,7 @@ git checkout develop
 
 ## Building & testing
 
-Packages target **.NET 10**.
+The package targets **.NET 10**.
 
 ```bash
 dotnet build -c Release
@@ -84,5 +84,5 @@ dotnet test
 ```
 
 Shared build settings (target frameworks, package metadata, SourceLink, symbols)
-live in `Directory.Build.props` (including the single lockstep `VersionPrefix`);
+live in `Directory.Build.props` (including the single `VersionPrefix`);
 each project's `.csproj` only declares what is unique to it (`Description`, `PackageTags`).
