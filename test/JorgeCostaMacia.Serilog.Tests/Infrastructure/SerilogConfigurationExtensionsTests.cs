@@ -37,7 +37,7 @@ public sealed class SerilogConfigurationExtensionsTests
 
     // The two properties no appsettings entry can produce: both are read off the running entry assembly.
     [Fact]
-    public void WithDefaults_StampsTheEntryAssemblyVersionAndName()
+    public void WithDefaults_OnALoggedEvent_StampsTheEntryAssemblyVersionAndName()
     {
         (ILogger logger, InMemorySink sink) = Build();
 
@@ -51,7 +51,7 @@ public sealed class SerilogConfigurationExtensionsTests
 
     // The enrichers the baseline owns, so they stop being copied into every app's appsettings pair.
     [Fact]
-    public void WithDefaults_AttachesTheThreadAndProcessEnrichers()
+    public void WithDefaults_OnALoggedEvent_AttachesTheThreadAndProcessIds()
     {
         (ILogger logger, InMemorySink sink) = Build();
 
@@ -65,7 +65,7 @@ public sealed class SerilogConfigurationExtensionsTests
     // WithExceptionDetails is the one worth having: it serializes the exception's own data rather than
     // just its message, so the log carries what the catch site saw.
     [Fact]
-    public void WithDefaults_AttachesTheExceptionDetails()
+    public void WithDefaults_OnALoggedException_AttachesItsDetails()
     {
         (ILogger logger, InMemorySink sink) = Build();
 
@@ -79,7 +79,7 @@ public sealed class SerilogConfigurationExtensionsTests
     // FromLogContext is what makes the correlation style work: the identifiers are pushed once
     // per scope and every statement inside carries them without naming them.
     [Fact]
-    public void WithDefaults_CarriesWhatTheLogContextPushed()
+    public void WithDefaults_InsideALogContextScope_CarriesThePushedProperty()
     {
         (ILogger logger, InMemorySink sink) = Build();
         Guid correlationId = Guid.NewGuid();

@@ -11,13 +11,13 @@ Extensions for Serilog — a logging baseline as one `LoggerConfiguration` call:
 
 - TFM: **`net10.0`**, single-target. **Do not reintroduce a per-TFM conditional** — if a dependency needs one, the answer is to move the whole repo, not to split it.
 - Serilog: **4.x**, with the three packages the baseline needs — `Serilog.Enrichers.Thread`, `Serilog.Enrichers.Process` and `Serilog.Exceptions`. Nothing else: the sinks, and `Serilog.Settings.Configuration` for `ReadFrom.Configuration`, are the host's choice and stay with it, so this package never drags a sink into an app.
-- Tests: **xUnit v4 (the `xunit.v3` package, 4.x) on Microsoft.Testing.Platform v2 (MTP)** — test projects are `OutputType=Exe`, and `dotnet test` runs MTP because the root **`global.json`** opts in (`"test": { "runner": "Microsoft.Testing.Platform" }`). MTP v2 dropped the VSTest bridge, so `TestingPlatformDotnetTestSupport` is gone, the `xunit.runner.visualstudio` adapter is **not referenced** (it is the VSTest adapter — the suite runs identically without it), and running the tests needs the **.NET 10 SDK**. Not MSTest, not VSTest.
+- Tests: **xUnit v4 (the `xunit.v3` package, 4.x) on Microsoft.Testing.Platform v2 (MTP)** — test projects are `OutputType=Exe`, `dotnet test` runs MTP because the root **`global.json`** opts in, and `xunit.runner.visualstudio` is referenced for IDE discovery, as `testing-dotnet` sets up. Running them needs the **.NET 10 SDK**.
 - Source is **UTF-8 without BOM** (`.editorconfig` `charset = utf-8`). camelCase locals, PascalCase types, I-prefixed interfaces. Copyright year stays **2023** (deliberate — don't bump).
-- **Explicit types everywhere — spell the type out.** Never `var`, never target-typed `new()`, never collection expressions `[]`: write `new Foo(...)`, `new byte[] { ... }`, `new List<T> { ... }`, `Array.Empty<T>()`. The `.editorconfig` sets all three to explicit, but only `var` is analyzer-enforced — the analyzer never reports the implicit forms. Develop (`dotnet-build-nuget` from github-workflows) guards target-typed `new(` and implicit `new[]` with a **grep step** that fails the build, and collection expressions `[…]` with a second one (`code-style-net`'s pattern: attributes, indexers, array types and list patterns never match it). Do not introduce any of them.
+- **Explicit types everywhere — spell the type out.** Never `var`, never target-typed `new()`, never collection expressions `[]`: write `new Foo(...)`, `new byte[] { ... }`, `new List<T> { ... }`, `Array.Empty<T>()`. The `.editorconfig` sets all three to explicit, but only `var` is analyzer-enforced — the analyzer never reports the implicit forms. Develop (`dotnet-build-nuget` from github-workflows) guards target-typed `new(` and implicit `new[]` with a **grep step** that fails the build, and collection expressions `[…]` with a second one (`code-style-dotnet`'s pattern: attributes, indexers, array types and list patterns never match it). Do not introduce any of them.
 
 ## Extend the framework's options, never replace its call
 
-The baseline is an **extension on the type Serilog already hands the host** — `LoggerConfiguration.WithDefaults()` — and never an `Add…` method that wraps the framework's own. The host keeps writing `AddSerilog(…)`, so what it composes stays readable in its `ProgramBuilder`; only the policy moves here. quartz-dotnet and `http-net` follow the same rule with their options extensions.
+The baseline is an **extension on the type Serilog already hands the host** — `LoggerConfiguration.WithDefaults()` — and never an `Add…` method that wraps the framework's own. The host keeps writing `AddSerilog(…)`, so what it composes stays readable in its `ProgramBuilder`; only the policy moves here. quartz-dotnet and `http-dotnet` follow the same rule with their options extensions.
 
 An `AddSerilogContext` facade that replaced `AddSerilog` was removed in 7.0.0 for breaking it: no host had adopted it, each had hand-rolled the enrichers instead. **Don't add another.** A policy belongs in an extension when Serilog cannot read it from configuration — the entry assembly's `Version` and `Application`, and the enrichers every app shares; when it can — sinks, levels and overrides — leave it in `appsettings`, where it can differ per app and per environment.
 
@@ -52,23 +52,24 @@ Use the **`gitflow` skill** for any branch/release work — never improvise.
 
 ## Relevant skills
 
-Skills that apply to this repo — let them trigger, or invoke explicitly. The first group is from `jorgecostamacia-agent-skills` (each `-net` skill brings the generic one it realizes); the rest from `dotnet-agent-skills` (the `dotnet/skills` marketplace).
+Skills that apply to this repo — let them trigger, or invoke explicitly. The first group is from `jorgecostamacia-agent-skills` (each `-dotnet` skill brings the generic one it realizes); the rest from `dotnet-agent-skills` (the `dotnet/skills` marketplace).
 
 A skill listed here but missing on this machine is one command away: `claude plugin marketplace add JorgeCostaMacia/skills` (or `dotnet/skills`) once, then `claude plugin install <skill>@<marketplace>`.
 
-- **`logging-net`** (with **`logging`**) — **the spec this package implements**: its *Wiring* section is `WithDefaults()` — `FromLogContext`, without which no pushed property reaches the line, the thread and process ids, structured exception details, and the entry assembly's `Version` and `Application` — and its *Configuration* section is what stays in `appsettings`. A change here is a change in what that skill describes: keep the two in step.
-- **`code-style-net`** — how the C# is written: explicit types, the 120-column width with declarations and constructions vertical, comments wrapped too, the gates.
-- **`build-net`** — the three-tier `Directory.Build.props`, the single `VersionPrefix`, CPM, the three-day package age, the NuGet audit as a build gate, the library's packing metadata, and the `nuget.config` base.
-- **`testing-net`** (with **`testing`**) — xUnit v3 on Microsoft.Testing.Platform, the test project layout, behaviour asserted through a real logger and an in-memory sink.
+- **`logging-dotnet`** (with **`logging`**) — **the spec this package implements**: its *Wiring* section is `WithDefaults()` — `FromLogContext`, without which no pushed property reaches the line, the thread and process ids, structured exception details, and the entry assembly's `Version` and `Application` — and its *Configuration* section is what stays in `appsettings`. A change here is a change in what that skill describes: keep the two in step.
+- **`code-style-dotnet`** — how the C# is written: explicit types, the 120-column width with declarations and constructions vertical, comments wrapped too, the gates.
+- **`build-dotnet`** — the three-tier `Directory.Build.props`, the single `VersionPrefix`, CPM, the three-day package age, the NuGet audit as a build gate, the library's packing metadata, and the `nuget.config` base.
+- **`testing-dotnet`** (with **`testing`**) — xUnit v3 on Microsoft.Testing.Platform, the test project layout, behaviour asserted through a real logger and an in-memory sink.
 - **`solid`** — design review of the public surface.
 - **`gitflow`** — all branch/release work.
+- **`changelog`** — the `CHANGELOG.md` entry a release adds when it asks something of the packages' consumers (a major, a new requirement, a changed default), written with the version bump.
 - **`dotnet`** — C# language server + general .NET development.
 - **`dotnet-msbuild`** — `Directory.Build.props`, project-file quality, CPM.
 - **`dotnet-nuget`** — dependency management.
 - **`dotnet-test`** / **`dotnet-test-migration`** — tests; the xUnit v4 / MTP v2 setup.
 - **`dotnet-upgrade`** — target-framework migrations.
 
-Not relevant to this repo (skip): `ddd` / `ddd-net`, `validation-net`, `clean-architecture-net` (one extension method, no modules or composition contexts), `efcore-net` / `efcore-postgres-net`, `messaging` / `bus-net` / `bus-kafka-net`, `github-actions` / `github-actions-net` (the company's CI; this repo's runs on github-workflows), `dotnet-aspnetcore` (that's http-net), `dotnet-data`, `dotnet-ai`, `dotnet-maui`, `dotnet-blazor`, `dotnet-template-engine`, `dotnet11`, `dotnet-diag`, `dotnet-advanced`.
+Not relevant to this repo (skip): `ddd` / `ddd-dotnet`, `validation-dotnet`, `clean-architecture-dotnet` (one extension method, no modules or composition contexts), `efcore-dotnet` / `efcore-postgres-dotnet`, `messaging` / `bus-dotnet` / `bus-kafka-dotnet`, `dotnet-aspnetcore` (that's http-dotnet), `dotnet-data`, `dotnet-ai`, `dotnet-maui`, `dotnet-blazor`, `dotnet-template-engine`, `dotnet11`, `dotnet-diag`, `dotnet-advanced`.
 
 ## Build & test
 

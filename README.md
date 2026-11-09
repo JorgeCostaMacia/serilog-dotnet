@@ -10,7 +10,7 @@
 [![Main](https://github.com/JorgeCostaMacia/serilog-dotnet/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/JorgeCostaMacia/serilog-dotnet/actions/workflows/main.yml)
 [![Develop](https://github.com/JorgeCostaMacia/serilog-dotnet/actions/workflows/develop.yml/badge.svg?branch=develop)](https://github.com/JorgeCostaMacia/serilog-dotnet/actions/workflows/develop.yml)
 
-Part of the `JorgeCostaMacia.*` family, alongside [ddd-dotnet](https://github.com/JorgeCostaMacia/ddd-dotnet) (DDD building blocks), [quartz-dotnet](https://github.com/JorgeCostaMacia/quartz-dotnet) (Quartz.NET extensions), [bus-net](https://github.com/JorgeCostaMacia/bus-net) (messaging) and [http-net](https://github.com/JorgeCostaMacia/http-net) (ASP.NET Core). Moved out of [shared-net](https://github.com/JorgeCostaMacia/shared-net) with the 10.2 versions, keeping the package id.
+Part of the `JorgeCostaMacia.*` family, alongside [ddd-dotnet](https://github.com/JorgeCostaMacia/ddd-dotnet) (DDD building blocks), [quartz-dotnet](https://github.com/JorgeCostaMacia/quartz-dotnet) (Quartz.NET extensions), [bus-dotnet](https://github.com/JorgeCostaMacia/bus-dotnet) (messaging) and [http-dotnet](https://github.com/JorgeCostaMacia/http-dotnet) (ASP.NET Core). Moved out of [shared-net](https://github.com/JorgeCostaMacia/shared-net) with the 10.2 versions, keeping the package id.
 
 An independent project: it builds on Serilog through its own extension point (an extension method on the `LoggerConfiguration` the host already writes) and is not affiliated with the Serilog project.
 
@@ -23,6 +23,10 @@ The **.NET 10** SDK.
 | Package | What it does |
 | --- | --- |
 | [JorgeCostaMacia.Serilog](https://www.nuget.org/packages/JorgeCostaMacia.Serilog/) | The logging baseline as a `LoggerConfiguration` extension (enrichers + entry-assembly properties; sinks and levels stay in config). |
+
+## Upgrading
+
+What each version asks of you, when it asks anything, is in [CHANGELOG.md](CHANGELOG.md).
 
 ## Contact
 
