@@ -1,6 +1,6 @@
 # serilog-dotnet — working in this repo
 
-Extensions for Serilog — a logging baseline as one `LoggerConfiguration` call: the log context, thread, process and exception-detail enrichers, plus the entry assembly's `Version` and `Application` — shipped on NuGet as `JorgeCostaMacia.Serilog`. Moved out of **shared-net** with the 10.2 versions, keeping the package id and the version line. An independent project, not affiliated with Serilog: the README says so, and the repo name must never read as Serilog itself.
+Extensions for Serilog — a logging baseline as one `LoggerConfiguration` call: the log context, thread, process and exception-detail enrichers, plus the entry assembly's `Version` and `Application` — shipped on NuGet as `JorgeCostaMacia.Serilog`. An independent project, not affiliated with Serilog: the README says so, and the repo name must never read as Serilog itself.
 
 ## Layout
 
