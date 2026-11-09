@@ -24,6 +24,10 @@ The **.NET 10** SDK.
 | --- | --- |
 | [JorgeCostaMacia.Serilog](https://www.nuget.org/packages/JorgeCostaMacia.Serilog/) | The logging baseline as a `LoggerConfiguration` extension (enrichers + entry-assembly properties; sinks and levels stay in config). |
 
+## Upgrading
+
+What each version asks of you, when it asks anything, is in [CHANGELOG.md](CHANGELOG.md).
+
 ## Contact
 
 - [LinkedIn](https://www.linkedin.com/in/jorge-costa-macia-842817164/)
